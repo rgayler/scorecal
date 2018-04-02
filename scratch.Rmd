@@ -1,0 +1,96 @@
+---
+title: "Scratch Notebook"
+output:
+  html_notebook:
+    df_print: paged
+    toc: true
+    toc_depth: 4
+    toc_float: true
+---
+
+This notebook is a place to fiddle with ideas before implementing code.
+
+# Simulation framework
+
+* Need to create some sort of object which specifies:
+    * A possibly quite complex, nonparametric distribution of scores
+    * A possibly quite complex, nonparametric expected outcome as a function of score
+    
+* Use cases:
+    * Extract expected outcome as a function of score.
+    This is the target relationship to be recovered by calibration.
+    * Random sample of scores from the distribution,
+    with randomly realised outcomes.
+    This is the input data for calibration.
+
+* Specifiy a list of components to be added (result is essentially a mixture of distributions)
+* Each component consists of a:
+    * Weight (specifies the weight for mixing the components)
+    * Distribution of scores
+    * Mapping from scores to expected outcome
+        * Expected outcome on natural log-odds scale
+* Scores mapped to discrete delivery scale        
+* Result is a data frame of delivery scale scores
+    * Score range is finite (known lower and upper bound)
+    * Scores are dense (no gaps between scores)
+    * Each score has a relative frequency (for generating instances)
+    * Each score has an expected outcome probabilitiy (for plotting true score-outcome relationship
+    and generating realised outcomes)
+
+# Distributions of scores
+
+I need continuous distributions of scores and discrete distributions of scores.
+
+## Continuous distributions 
+
+Look at using skew-t distributions to model continuous score distributions.
+
+```{r}
+library(sn)
+library(tidyverse)
+
+n <- 1e6
+
+d <- tibble(x = rst(n, xi=0, omega = 1, alpha = -3, nu = 9))
+
+d %>% ggplot() +
+  geom_histogram(aes(x = x), bins = 100) + 
+  scale_y_sqrt()
+
+summary(d$x)
+```
+
+That looks like a nice set of default skewness parameters.
+
+Try looking at extreme quantiles.
+
+```{r}
+q <- qst(p = c(0.0001, 0.001, 0.01, 0.05, 0.1, 0.25, 0.5, 0.75, 0.9, 0.95, 0.99, 0.999, 0.9999), xi=0, omega = 1, alpha = -3, nu = 9)
+q
+```
+
+Invert that.
+
+```{r}
+pst(x = q, xi=0, omega = 1, alpha = -3, nu = 9)
+```
+
+Get the densities
+
+```{r}
+dst(x = q, xi=0, omega = 1, alpha = -3, nu = 9)
+```
+
+Random draw of a small number of cases.
+
+```{r}
+n <- 20
+
+d <- tibble(x = rst(n, xi=0, omega = 1, alpha = -3, nu = 9))
+
+d %>% ggplot() +
+  geom_histogram(aes(x = x), bins = 100) + 
+  scale_y_sqrt()
+
+```
+

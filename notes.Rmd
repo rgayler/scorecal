@@ -1,0 +1,31 @@
+---
+title: "Project Notes"
+author: "Ross Gayler"
+date: "1 April 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Notes documenting the creation/development of this project.
+
+* Decide project name
+    * Proposed *scorecal*
+    * Check with `available::available()`
+    
+* Create project
+    * Create new project from RStudio menu, with git archive
+    * Add these project notes (`notes.Rmd`)
+    * Add `notes.*` to `.Rbuildignore`
+    * Add a scratch notebook (`scratch.Rmd`) for playing with ideas
+    * Add `scratch.*` to `.Rbuildignore`
+    
+* Synchonise with public GitHub repo
+    * Generate and store personal access token (one-off task)
+        * Generate PTA at https://github.com/settings/tokens
+        * Add GITHUB_PAT=token_value to ~/.Renviron
+        * Restart R
+        * In project run devtools::use_github(protocol = "https")
+        * In project run devtools::use_readme_rmd()

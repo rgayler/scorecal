@@ -1,0 +1,29 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "README-"
+)
+```
+
+# scorecal
+
+The goal of scorecal is to capture my personal best practices for credit score calibration.
+This package will be develoiped over time
+and I intend to produce blog posts to record the development.
+
+## Installation
+
+You can install scorecal from github with:
+
+```{r gh-installation, eval = FALSE}
+# install.packages("devtools")
+devtools::install_github("rgayler/scorecal")
+```
+
